@@ -48,7 +48,7 @@ int arraySum(vector<int> & arr){
   int sum = 0;
 
   for (int value : arr){
-    sum += value
+    sum += value;
   }
 
   return sum;
@@ -93,7 +93,7 @@ void playGame(){
 
   cout << "Hoffman: "
       << hoffman_deck[0]
-      << "[CARD]\n";
+      << " [CARD]\n";
 
   int player_total = arraySum(player_deck);
   int hoffman_total = arraySum(hoffman_deck);
@@ -102,7 +102,7 @@ void playGame(){
 
   //Player Logic
   while (player_total < 21) {
-    cout << "Hit or Stay?";
+    cout << "Hit or Stay? ";
     cin >> choice;
     if (choice == "Hit" || choice == "hit") {
       player_deck.push_back(deck[deckPosition++]);
@@ -110,7 +110,7 @@ void playGame(){
       //Recalculate Total
       player_total = arraySum(player_deck);
 
-      cout << "Player Total:" << player_deck << "\n";
+      cout << "Player Total:" << arraySum(player_deck) << "\n";
 
     }
     else {
