@@ -131,7 +131,7 @@ void playGame(){
 
   //determine winner
   if (player_total > 21) {
-    std::cout << "Loser";
+    std::cout << "\n Loser";
   }
   else if (hoffman_total > 21) {
     std::cout << "Winner";
