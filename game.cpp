@@ -10,33 +10,32 @@ using namespace std;
 void playGame();
 void genNewDeck(int deck[]);
 void shuffleDeck(int deck[]);
-void dealDeck(int deck[]);
+void dealDeck(int deck[], vector<int>& player_deck, vector<int>& hoffman_deck, int& deckPosition);
 int arraySum(vector<int> & arr);
 
 int main(){
-  std::random_device rd;
-  srand(time(0));
-  
   cout << "Welcome Clancy, Lets play a game:\n";
   playGame();
+
   return 0;
 }
 
-void genNewDeck(int* deck){
+void genNewDeck(int deck[]){
     for (int i = 0; i < 11; i++){
       deck[i] = i + 1;
     }
  }
 
  void shuffleDeck(int deck[]){
-  std::shuffle(deck, deck + 11, std::mt19937(std::random_device{}()));
+  random_device rd;
+  mt19937 rng(rd());
+
+  shuffle(deck, deck + 11, rng);
 }
 
-void dealDeck(int deck[]){
-  vector<int> player_deck;
-	vector<int> hoffman_deck;
-
-  int deckPosition = 0;
+void dealDeck(int deck[], vector<int>& player_deck, vector<int>& hoffman_deck, int& deckPosition){
+  //vector<int> player_deck;
+	//vector<int> hoffman_deck;
 
   player_deck.push_back(deck[deckPosition++]);
   hoffman_deck.push_back(deck[deckPosition++]);
@@ -48,8 +47,8 @@ void dealDeck(int deck[]){
 int arraySum(vector<int> & arr){
   int sum = 0;
 
-  for (int i = 0; i < arr.size(); i++){
-    sum += arr[i];
+  for (int value : arr){
+    sum += value
   }
 
   return sum;
@@ -58,8 +57,14 @@ int arraySum(vector<int> & arr){
 } 
 
  
-void playGame(<vector>player_deck & <vector>hoffman_deck){
+void playGame(){
+  vector<int> player_deck;
+  vector<int> hoffman_deck;
+
+  int deckPosition = 0;
+
   int deck[11];
+  
   genNewDeck(deck);
   
   //TODO: Make sure to add turn system.
@@ -67,7 +72,7 @@ void playGame(<vector>player_deck & <vector>hoffman_deck){
   //shuffle
   shuffleDeck(deck);
   //deal the deck
-  dealDeck(deck);
+  dealDeck(deck, player_deck, hoffman_deck, deckPosition);
 /*
   vector<int> player_deck;
 	vector<int> hoffman_deck;
@@ -97,10 +102,16 @@ void playGame(<vector>player_deck & <vector>hoffman_deck){
 
   //Player Logic
   while (player_total < 21) {
-    std::cout << "Hit or Stay?";
-    std::cin >> choice;
-    if (choice == "Hit") {
-      player_deck.push_back(deck[deckPosition++]); //TODO: 'deckPosition’ was not declared in this scope, not declared in the method need to find out how to get deckPosition or an alternative to get the position of the deck.
+    cout << "Hit or Stay?";
+    cin >> choice;
+    if (choice == "Hit" || choice == "hit") {
+      player_deck.push_back(deck[deckPosition++]);
+
+      //Recalculate Total
+      player_total = arraySum(player_deck);
+
+      cout << "Player Total:" << player_deck << "\n";
+
     }
     else {
       break;
@@ -110,6 +121,9 @@ void playGame(<vector>player_deck & <vector>hoffman_deck){
   //CPU Turn Logic
   while (hoffman_total < 17){
     hoffman_deck.push_back(deck[deckPosition++]);
+
+    //recalculate total
+    hoffman_total = arraySum(hoffman_deck);
     if(hoffman_total >= 17){
       break;
     }
